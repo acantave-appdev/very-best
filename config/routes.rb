@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root :to => "venues#index"
+  root :to => "dishes#index"
 
   # Routes for the Bookmark resource:
   # CREATE
@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
   # Routes for the Dish resource:
   # CREATE
+  
+
   get "/dishes/new", :controller => "dishes", :action => "new"
   post "/create_dish", :controller => "dishes", :action => "create"
 
