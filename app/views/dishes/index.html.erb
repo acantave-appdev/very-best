@@ -91,9 +91,9 @@
   <div class="col-md-6">
     <table class="table table-striped table-hover">
       <tr>
-        <th>Name</th>
+        <th>The very best...</th>
         <th>Is at...</th>
-        <th>Cuisine</th>
+        <th></th>
         <!--<th>Actions</th>-->
       </tr>
 
@@ -110,7 +110,7 @@
             <input type="hidden" name="dish_id" class="form-control" value="<%=dish.id%>">
             <input type="hidden" name="user_id" class="form-control" value="<%=current_user.id%>">
             <%= select_tag("venue_id", options_from_collection_for_select(Venue.order(:name), :id, :name, :class => "form-control")) %>
-            <button class="btn btn-primary btn-sm">
+            <button style="display:inline;" class="btn btn-primary btn-sm">
             <i class="fa fa-heart"></i>
             </button>
             
