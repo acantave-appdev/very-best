@@ -1,16 +1,18 @@
 class VenuesController < ApplicationController
-  def index  
+  def index
     @q = Venue.ransack(params[:q])
-    @venues = @q.result(:distinct => true).includes(:bookmarks, :neighborhood, :fans, :specialties).page(params[:page])
-    # @user_venues = []
+    @venues = @q.result(:distinct => true).includes(:bookmarks, :neighborhood, :fans, :specialties).page(params[:page]).per(10)
     @not_ids = Bookmark.where(:user_id => current_user.id)
     @not_venues = Venue.all
     @not_ids.each do |bm|
       @not_venues = @not_venues.where.not(:id => bm.venue_id)
    end
+   
    @not_venues.each do |venue|
      @venues = @venues.where.not(:id => venue.id)
   end
+  
+  @venues = @venues.order(:name)
     @location_hash = Gmaps4rails.build_markers(@venues.where.not(:address_latitude => nil)) do |venue, marker|
       marker.lat venue.address_latitude
       marker.lng venue.address_longitude
@@ -23,14 +25,14 @@ class VenuesController < ApplicationController
   def show
     @bookmark = Bookmark.new
     @venue = Venue.find(params[:id])
-     @location_hash = Gmaps4rails.build_markers(Venue.where(:id => @venue.id).where.not(:address_latitude => nil)) do |venue, marker|
+    @location_hash = Gmaps4rails.build_markers(Venue.where(:id => @venue.id).where.not(:address_latitude => nil)) do |venue, marker|
       marker.lat venue.address_latitude
       marker.lng venue.address_longitude
       marker.infowindow "<h5><a href='/venues/#{venue.id}'>#{venue.name}</a></h5><small>#{venue.address_formatted_address}</small>"
     end
-
     render("venues/show.html.erb")
   end
+
 
   def new
     @venue = Venue.new
